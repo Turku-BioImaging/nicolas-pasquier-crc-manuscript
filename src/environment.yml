@@ -2,6 +2,7 @@ name: project-nicolas-pasquier
 channels:
   - conda-forge
 dependencies:
+  - joblib
   - python=3.10
   - zarr
   - scikit-image=0.22
