@@ -1,10 +1,12 @@
 """
 Class definitions for zone segmentation
 """
-
 import numpy as np
 import zarr
-from skimage.morphology import erosion, dilation, disk
+from skimage import img_as_ubyte
+from skimage.draw import set_color
+from skimage.exposure import adjust_gamma
+from skimage.morphology import dilation, disk, erosion
 
 INNER_ZONE_THICKNESS = 45
 OUTER_ZONE_THICKNESS = 45
@@ -41,7 +43,6 @@ class ApicalOutZoner:
 
     def generate(self):
         mask = self.mask
-        # outer_zone_mask = np.invert(erosion(mask, disk(OUTER_ZONE_THICKNESS)))
         outer_zone_mask = _generate_outer_zone(mask)
 
         outer_zone_dataset_path = (
@@ -137,3 +138,44 @@ class ApicalInZoner:
                 "zone_thickness": INNER_ZONE_THICKNESS,
             }
         )
+
+        if save_overlays is True:
+            overlay_img = self._generate_overlays(outer_zone, inner_zone)
+
+            overlay_dataset_path = (
+                f"{self.mix}/apical_in/{self.roi}/segmentation/zones/overlay"
+            )
+
+            if overlay_dataset_path in self.root:
+                del self.root[overlay_dataset_path]
+
+            overlay_dataset = self.root.create_dataset(
+                overlay_dataset_path, data=overlay_img
+            )
+            overlay_dataset.attrs.update(
+                {
+                    "author": "Turku BioImaging",
+                    "description": "Apical-in zone overlays",
+                    "mix": self.mix,
+                    "roi": self.roi,
+                }
+            )
+
+    def _generate_overlays(
+        self, outer_zone: np.ndarray, inner_zone: np.ndarray, alpha=0.25
+    ):
+
+        raw_data = img_as_ubyte(
+            self.root[self.mix]["apical_in"][self.roi]["raw_data"][:]
+        )
+
+        raw_data = img_as_ubyte(raw_data)
+        raw_data = adjust_gamma(raw_data, 0.5)
+
+        rr, cc = np.where(outer_zone)
+        set_color(raw_data, (rr, cc), [0, 255, 0], alpha=alpha)
+
+        rr, cc = np.where(inner_zone)
+        set_color(raw_data, (rr, cc), [255, 0, 0], alpha=alpha)
+
+        return raw_data
