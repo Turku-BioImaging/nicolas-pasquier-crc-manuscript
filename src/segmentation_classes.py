@@ -1,13 +1,11 @@
 """
 Contains the classes used for epithelial segmentation
 """
-
-import os
-import zarr
 import numpy as np
+import zarr
 from scipy import ndimage as ndi
+from skimage import filters, measure, morphology, segmentation
 from skimage.color import rgb2gray
-from skimage import filters, segmentation, measure
 
 
 class ApicalOutSegmenter:
@@ -71,6 +69,7 @@ class ApicalInSegmenter:
 
         thr = filters.threshold_local(inverted_img, block_size=355)
         inverted_img = inverted_img > thr
+        inverted_img = morphology.binary_closing(inverted_img, morphology.disk(7))
 
         # Get the largest "hole".
         # This usually corresponds to the luminal space.

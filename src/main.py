@@ -2,12 +2,12 @@
 Main entrypoint script for ROI segmentation and analysis.
 """
 
-# import os
-import zarr
 import argparse
+
+import zarr
+from joblib import Parallel, delayed
 from segmentation_classes import ApicalInSegmenter, ApicalOutSegmenter
 from zoning_classes import ApicalInZoner, ApicalOutZoner
-from joblib import Parallel, delayed
 
 
 def segment_roi(zarr_path: str, mix: str, roi: str):
@@ -83,4 +83,4 @@ if __name__ == "__main__":
             )
 
         print("Generating ROI zones...")
-        Parallel(n_jobs=-1, verbose=10)(delayed(zone_roi)(*roi) for roi in rois)
+        Parallel(n_jobs=6, verbose=10)(delayed(zone_roi)(*roi) for roi in rois)
