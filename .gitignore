@@ -161,3 +161,4 @@ cython_debug/
 
 rois
 zarr_data
+analysis
