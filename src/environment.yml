@@ -8,3 +8,6 @@ dependencies:
   - scikit-image=0.22
   - tqdm
   - zarr
+  - pip
+  - pip:
+    - pylibCZIrw
