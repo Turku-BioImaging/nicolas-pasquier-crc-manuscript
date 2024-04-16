@@ -3,7 +3,6 @@ Classes for ROI data analysis.
 """
 
 import os
-import pandas as pd
 import zarr
 import numpy as np
 
@@ -32,9 +31,14 @@ class RoiAnalyzer:
         roi_mask = self.root[self.roi_path]["segmentation"]["mask"][:]
         outer_zone_mask = self.root[self.roi_path]["segmentation"]["zones"]["outer"][:]
         if self.apical_type == "apical_in":
-            inner_zone_mask = self.root[self.roi_path]["segmentation"]["zones"][
-                "inner"
-            ][:]
+            if "inner_manual" in self.root[self.roi_path]["segmentation"]["zones"]:
+                inner_zone_mask = self.root[self.roi_path]["segmentation"]["zones"][
+                    "inner_manual"
+                ][:]
+            else:
+                inner_zone_mask = self.root[self.roi_path]["segmentation"]["zones"][
+                    "inner"
+                ][:]
 
         roi_pixels = np.count_nonzero(roi_mask)
         roi_area = roi_pixels * PIXEL_SIZE
