@@ -21,7 +21,9 @@ if __name__ == "__main__":
     root = zarr.open(ZARR_PATH, mode="w")
 
     mix_dirs = [
-        d for d in os.listdir(ROI_DIR) if os.path.isdir(os.path.join(ROI_DIR, d))
+        d
+        for d in os.listdir(ROI_DIR)
+        if (os.path.isdir(os.path.join(ROI_DIR, d)) and d != "manual")
     ]
 
     for mix in mix_dirs:
