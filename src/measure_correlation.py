@@ -5,13 +5,10 @@ Correlation analysis of intensity HER2 vs HER3 and HER2 vs SORLA within on patie
 """
 
 import os
-import zarr
 
-# from joblib import Parallel, delayed
 import numpy as np
 import pandas as pd
-
-# from skimage import io, img_as_ubyte
+import zarr
 from scipy.stats import pearsonr
 from tqdm import tqdm
 
@@ -19,6 +16,8 @@ ZARR_PATH = os.path.join(os.path.dirname(__file__), "..", "zarr_data", "roi_data
 
 MIX_1_CH_NAMES = ["HER2", "SORLA"]
 MIX_2_CH_NAMES = ["HER2", "HER3"]
+
+PIXEL_SIZE = 0.325  # um
 
 root = zarr.open(ZARR_PATH, mode="r")
 mixes = list(root.keys())
@@ -29,9 +28,14 @@ rois = [
     for roi in list(root[mix][apical_type].keys())
 ]
 
-# process Mix 1 data
-# HER2 -> Ch2
-# SORLA -> Ch3
+
+def _normalize_intensity_to_area(roi: np.ndarray, mask: np.ndarray) -> float:
+    assert roi.shape == mask.shape, "ROI and mask must have the same shape."
+    roi_pixels = roi[mask]
+    mask_um_area = np.count_nonzero(mask) * PIXEL_SIZE
+
+    return roi_pixels.sum() / mask_um_area
+
 
 mix_1_data = []
 mix_2_data = []
@@ -53,27 +57,14 @@ for item in tqdm(rois):
     )
     basal_mask = roi_path["segmentation"]["zones"]["outer"]
 
-    # roi_mask = img_as_ubyte(roi_mask)
-    # apical_mask = img_as_ubyte(apical_mask)
-    # basal_mask = img_as_ubyte(basal_mask)
-
     ch2_roi = raw_data[:, :, 1][roi_mask]
-    # ch2_roi[roi_mask == 0] = 0
-
     ch3_roi = raw_data[:, :, 2][roi_mask]
-    # ch3_roi[roi_mask == 0] = 0
 
     ch2_apical = raw_data[:, :, 1][apical_mask]
-    # ch2_apical[apical_mask == 0] = 0
-
     ch2_basal = raw_data[:, :, 1][basal_mask]
-    # ch2_basal[basal_mask == 0] = 0
 
     ch3_apical = raw_data[:, :, 2][apical_mask]
-    # ch3_apical[apical_mask == 0] = 0
-
     ch3_basal = raw_data[:, :, 2][basal_mask]
-    # ch3_basal[basal_mask == 0] = 0
 
     if mix == "mix_1":
         ch2_name, ch3_name = MIX_1_CH_NAMES
@@ -89,7 +80,13 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "whole_roi",
         f"{ch2_name}_total_intensity": ch2_roi.sum(),
+        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 1], roi_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_roi.sum(),
+        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 2], roi_mask
+        ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_roi, ch3_roi)[0] if len(ch2_roi) > 0 else 0
         ),
@@ -103,7 +100,13 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "apical",
         f"{ch2_name}_total_intensity": ch2_apical.sum(),
+        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 1], apical_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_apical.sum(),
+        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 2], apical_mask
+        ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_apical, ch3_apical)[0] if len(ch2_apical) > 0 else 0
         ),
@@ -116,7 +119,13 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "basal",
         f"{ch2_name}_total_intensity": ch2_basal.sum(),
+        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 1], basal_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_basal.sum(),
+        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 2], basal_mask
+        ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_basal, ch3_basal)[0] if len(ch2_basal) > 0 else 0
         ),
@@ -139,20 +148,11 @@ for item in tqdm(rois):
     roi_mask = roi_path["segmentation"]["mask"]
     apical_mask = roi_path["segmentation"]["zones"]["outer"]
 
-    # roi_mask = img_as_ubyte(roi_mask)
-    # apical_mask = img_as_ubyte(apical_mask)
-
     ch2_roi = raw_data[:, :, 1][roi_mask]
-    # ch2_roi[roi_mask == 0] = 0
-
     ch3_roi = raw_data[:, :, 2][roi_mask]
-    # ch3_roi[roi_mask == 0] = 0
 
     ch2_apical = raw_data[:, :, 1][apical_mask]
-    # ch2_apical[apical_mask == 0] = 0
-
     ch3_apical = raw_data[:, :, 2][apical_mask]
-    # ch3_apical[apical_mask == 0] = 0
 
     if mix == "mix_1":
         ch2_name, ch3_name = MIX_1_CH_NAMES
@@ -169,7 +169,13 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "whole_roi",
         f"{ch2_name}_total_intensity": ch2_roi.sum(),
+        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 1], roi_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_roi.sum(),
+        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 2], roi_mask
+        ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_roi, ch3_roi)[0] if len(ch2_roi) > 0 else 0
         ),
@@ -183,7 +189,13 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "apical",
         f"{ch2_name}_total_intensity": ch2_apical.sum(),
+        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 1], apical_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_apical.sum(),
+        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+            raw_data[:, :, 2], apical_mask
+        ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_apical, ch3_apical)[0] if len(ch2_apical) > 0 else 0
         ),
