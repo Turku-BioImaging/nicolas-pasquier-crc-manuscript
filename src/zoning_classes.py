@@ -72,6 +72,39 @@ class ApicalOutZoner:
             }
         )
 
+        overlay_img = self._generate_overlay(outer_zone_mask)
+        overlay_dataset_path = (
+            f"{self.mix}/apical_out/{self.roi}/segmentation/zones/overlay"
+        )
+
+        if overlay_dataset_path in self.root:
+            del self.root[overlay_dataset_path]
+
+        overlay_dataset = self.root.create_dataset(
+            overlay_dataset_path, data=overlay_img
+        )
+        overlay_dataset.attrs.update(
+            {
+                "author": "Turku BioImaging",
+                "description": "Apical-out zone overlay",
+                "mix": self.mix,
+                "roi": self.roi,
+            }
+        )
+
+    def _generate_overlay(self, outer_zone: np.ndarray, alpha=0.25):
+        raw_data = img_as_ubyte(
+            self.root[self.mix]["apical_out"][self.roi]["raw_data"][:]
+        )
+
+        raw_data = img_as_ubyte(raw_data)
+        raw_data = adjust_gamma(raw_data, 0.5)
+
+        rr, cc = np.where(outer_zone)
+        set_color(raw_data, (rr, cc), [0, 255, 0], alpha=alpha)
+
+        return raw_data
+
 
 class ApicalInZoner:
     def __init__(self, zarr_path: str, mix: str, roi: str):
@@ -198,7 +231,7 @@ class ApicalInZoner:
             os.path.basename(item).replace(".tif", "")
             for item in manual_inner_zone_paths
         ]
-        
+
         # print(manual_inner_zone_list)
 
         if self.roi in manual_inner_zone_list:
