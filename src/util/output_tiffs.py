@@ -3,7 +3,6 @@ Utility script for generating tiff outputs of ROI roi data and their generated m
 """
 
 import os
-import numpy as np
 import zarr
 from skimage import io, img_as_ubyte
 
@@ -25,14 +24,22 @@ if __name__ == "__main__":
             roi_keys = list(root[mix][ap].keys())
 
             for roi_key in roi_keys:
-                raw_data = root[mix][ap][roi_key]["raw_data"]
-                mask = root[mix][ap][roi_key]["segmentation"]["mask"]
-                # zone_overlay = root[mix][ap][roi_key]["segmentation"]["zones"][
-                #     "overlay"
-                # ]
 
                 roi_dir = os.path.join(OUTPUT_DIR, mix, ap, roi_key)
                 os.makedirs(roi_dir, exist_ok=True)
+
+                raw_data = root[mix][ap][roi_key]["raw_data"]
+                mask = root[mix][ap][roi_key]["segmentation"]["mask"]
+
+                # if "overlay" in root[mix][ap][roi_key]["segmentation"]["zones"]:
+                zone_overlay = root[mix][ap][roi_key]["segmentation"]["zones"][
+                    "overlay"
+                ]
+                io.imsave(
+                    os.path.join(roi_dir, "zone_overlay.tif"),
+                    zone_overlay,
+                    check_contrast=False,
+                )
 
                 io.imsave(
                     os.path.join(roi_dir, "raw_data.tif"),
@@ -44,8 +51,3 @@ if __name__ == "__main__":
                     img_as_ubyte(mask),
                     check_contrast=False,
                 )
-                # io.imsave(
-                #     os.path.join(roi_dir, "zone_overlay.tif"),
-                #     zone_overlay,
-                #     check_contrast=False,
-                # )
