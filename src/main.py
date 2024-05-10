@@ -9,6 +9,7 @@ from joblib import Parallel, delayed
 from segmentation_classes import ApicalInSegmenter, ApicalOutSegmenter
 from zoning_classes import ApicalInZoner, ApicalOutZoner
 from analysis_classes import RoiAnalyzer
+from nuclei_segmentation import NucleiSegmenter
 import pandas as pd
 
 
@@ -32,6 +33,11 @@ def zone_roi(zarr_path: str, mix: str, roi: str):
         zoner.generate()
     else:
         raise ValueError(f"Cannot infer apical type of ROI {roi}")
+
+
+def segment_roi_nuclei(zarr_path: str, mix: str, apical_type: str, roi: str):
+    segmenter = NucleiSegmenter(zarr_path, f"{mix}/{apical_type}/{roi}")
+    segmenter.segment()
 
 
 def analyze_roi(zarr_path: str, mix: str, apical_type: str, roi: str):
@@ -63,6 +69,12 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--skip-zoning", action="store_true", help="Skip the zoning step"
+    )
+
+    parser.add_argument(
+        "--skip-nuclei-segmentation",
+        action="store_true",
+        help="Skip the nuclei segmentation step",
     )
 
     parser.add_argument(
@@ -102,6 +114,14 @@ if __name__ == "__main__":
 
         print("Generating ROI zones...")
         Parallel(n_jobs=6, verbose=10)(delayed(zone_roi)(*roi) for roi in rois)
+
+    if args.skip_nuclei_segmentation is False:
+        Parallel(n_jobs=1, verbose=10)(
+            delayed(segment_roi_nuclei)(args.zarr_path, mix, apical_type, roi)
+            for mix in list(root.keys())
+            for apical_type in list(root[mix].keys())
+            for roi in list(root[mix][apical_type].keys())
+        )
 
     if args.skip_analysis is False:
         mixes = list(root.keys())

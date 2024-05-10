@@ -30,8 +30,8 @@ if __name__ == "__main__":
 
                 raw_data = root[mix][ap][roi_key]["raw_data"]
                 mask = root[mix][ap][roi_key]["segmentation"]["mask"]
+                nuclei = root[mix][ap][roi_key]["segmentation"]["nuclei"]
 
-                # if "overlay" in root[mix][ap][roi_key]["segmentation"]["zones"]:
                 zone_overlay = root[mix][ap][roi_key]["segmentation"]["zones"][
                     "overlay"
                 ]
@@ -50,4 +50,8 @@ if __name__ == "__main__":
                     os.path.join(roi_dir, "mask.tif"),
                     img_as_ubyte(mask),
                     check_contrast=False,
+                )
+
+                io.imsave(
+                    os.path.join(roi_dir, "nuclei.tif"), nuclei, check_contrast=False
                 )

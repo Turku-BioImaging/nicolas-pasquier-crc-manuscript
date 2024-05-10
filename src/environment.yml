@@ -6,8 +6,10 @@ dependencies:
   - pandas=2.2
   - python=3.10
   - scikit-image=0.22
+  - tensorflow[and-cuda]
   - tqdm
   - zarr
   - pip
   - pip:
     - pylibCZIrw
+    - stardist==0.9.1
