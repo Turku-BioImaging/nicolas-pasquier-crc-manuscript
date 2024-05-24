@@ -45,8 +45,12 @@ def _normalize_intensity_to_nuclei(
     ), "Nuclei labels and mask must have the same shape."
 
     roi_pixels = roi[mask]
-    nuclei_labels[~mask] = 0
-    nuclei_count = np.count_nonzero(np.unique(nuclei_labels))
+    masked_nuclei_labels = np.copy(nuclei_labels)
+    masked_nuclei_labels[mask == 0] = 0
+    # masked_nuclei_labels = np.array(nuclei_labels)[mask]
+
+    nuclei_count = np.count_nonzero(np.unique(masked_nuclei_labels))
+    print(nuclei_count)
 
     return roi_pixels.sum() / nuclei_count
 
