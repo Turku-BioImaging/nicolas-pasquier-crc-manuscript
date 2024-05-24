@@ -37,6 +37,24 @@ def _normalize_intensity_to_area(roi: np.ndarray, mask: np.ndarray) -> float:
     return roi_pixels.sum() / mask_um_area
 
 
+def _normalize_intensity_to_nuclei(
+    roi: np.ndarray, nuclei_labels: np.ndarray, mask: np.ndarray
+) -> float:
+    assert (
+        nuclei_labels.shape == mask.shape
+    ), "Nuclei labels and mask must have the same shape."
+
+    roi_pixels = roi[mask]
+    masked_nuclei_labels = np.copy(nuclei_labels)
+    masked_nuclei_labels[mask == 0] = 0
+    # masked_nuclei_labels = np.array(nuclei_labels)[mask]
+
+    nuclei_count = np.count_nonzero(np.unique(masked_nuclei_labels))
+    print(nuclei_count)
+
+    return roi_pixels.sum() / nuclei_count
+
+
 mix_1_data = []
 mix_2_data = []
 
@@ -80,12 +98,18 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "whole_roi",
         f"{ch2_name}_total_intensity": ch2_roi.sum(),
-        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch2_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 1], roi_mask
         ),
+        f"{ch2_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 1], roi_path["segmentation"]["nuclei"], roi_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_roi.sum(),
-        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch3_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 2], roi_mask
+        ),
+        f"{ch3_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 2], roi_path["segmentation"]["nuclei"], roi_mask
         ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_roi, ch3_roi)[0] if len(ch2_roi) > 0 else 0
@@ -100,12 +124,18 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "apical",
         f"{ch2_name}_total_intensity": ch2_apical.sum(),
-        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch2_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 1], apical_mask
         ),
+        f"{ch2_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 1], roi_path["segmentation"]["nuclei"], apical_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_apical.sum(),
-        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch3_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 2], apical_mask
+        ),
+        f"{ch3_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 2], roi_path["segmentation"]["nuclei"], apical_mask
         ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_apical, ch3_apical)[0] if len(ch2_apical) > 0 else 0
@@ -119,12 +149,18 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "basal",
         f"{ch2_name}_total_intensity": ch2_basal.sum(),
-        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch2_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 1], basal_mask
         ),
+        f"{ch2_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 1], roi_path["segmentation"]["nuclei"], basal_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_basal.sum(),
-        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch3_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 2], basal_mask
+        ),
+        f"{ch3_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 2], roi_path["segmentation"]["nuclei"], basal_mask
         ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_basal, ch3_basal)[0] if len(ch2_basal) > 0 else 0
@@ -169,11 +205,11 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "whole_roi",
         f"{ch2_name}_total_intensity": ch2_roi.sum(),
-        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch2_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 1], roi_mask
         ),
         f"{ch3_name}_total_intensity": ch3_roi.sum(),
-        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch3_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 2], roi_mask
         ),
         f"{ch2_name}_{ch3_name}_correlation": (
@@ -189,12 +225,18 @@ for item in tqdm(rois):
         "roi_type": apical_type,
         "zone": "apical",
         f"{ch2_name}_total_intensity": ch2_apical.sum(),
-        f"{ch2_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch2_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 1], apical_mask
         ),
+        f"{ch2_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 1], roi_path["segmentation"]["nuclei"], apical_mask
+        ),
         f"{ch3_name}_total_intensity": ch3_apical.sum(),
-        f"{ch3_name}_normalized_intensity": _normalize_intensity_to_area(
+        f"{ch3_name}_normalized_intensity_area": _normalize_intensity_to_area(
             raw_data[:, :, 2], apical_mask
+        ),
+        f"{ch3_name}_normalized_intensity_nuclei": _normalize_intensity_to_nuclei(
+            raw_data[:, :, 2], roi_path["segmentation"]["nuclei"], apical_mask
         ),
         f"{ch2_name}_{ch3_name}_correlation": (
             pearsonr(ch2_apical, ch3_apical)[0] if len(ch2_apical) > 0 else 0
