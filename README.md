@@ -15,8 +15,7 @@ Mucinous colorectal carcinoma (MUC CRC) dissemination into the tumor stroma and 
 [Setup and run instructions here]
 
 ## Organizational affiliations
-<sup>1</sup>Turku Bioscience Centre, University of Turku and Åbo Akademi University, Turku, Finland
-
+<sup>1</sup>Turku Bioscience Centre, University of Turku and Åbo Akademi University, Turku, Finland  
 <sup>2</sup>Université Paris-Saclay, Gustave Roussy, Inserm, UMR 1279 Tumor Cell Dynamics, F-94805, Villejuif, France
 
 <sup>3</sup>INSERM UMR-S1310, Université Paris-Saclay, Hôpital Paul Brousse, Villejuif F-94805, France
