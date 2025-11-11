@@ -16,41 +16,24 @@ Mucinous colorectal carcinoma (MUC CRC) dissemination into the tumor stroma and 
 
 ## Organizational affiliations
 <sup>1</sup>Turku Bioscience Centre, University of Turku and Åbo Akademi University, Turku, Finland  
-<sup>2</sup>Université Paris-Saclay, Gustave Roussy, Inserm, UMR 1279 Tumor Cell Dynamics, F-94805, Villejuif, France
+<sup>2</sup>Université Paris-Saclay, Gustave Roussy, Inserm, UMR 1279 Tumor Cell Dynamics, F-94805, Villejuif, France  
+<sup>3</sup>INSERM UMR-S1310, Université Paris-Saclay, Hôpital Paul Brousse, Villejuif F-94805, France  
+<sup>4</sup>INSERM-U932, Immunity and Cancer, Institut Curie, Paris-Cité University, Paris, France  
+<sup>5</sup>INSERM-U932, Immunity and Cancer, Institut Curie, PSL University, Paris, France  
+<sup>6</sup>Turku BioImaging, Åbo Akademi University and University of Turku, Turku, Finland  
+<sup>7</sup>Department of Diagnostics and Public Health, University of Verona, Verona 37134, Italy  
+<sup>8</sup>Medical Biology and Pathology Department, Pathology Laboratory, Gustave Roussy Cancer Campus, Villejuif, France  
+<sup>9</sup>Platform for Experimental and Translational Pathology (PETRA), Gustave Roussy Cancer Campus, Villejuif, France  
+<sup>10</sup>Institute of Biomedicine, and MediCity Research Laboratory, University of Turku, Turku, Finland  
+<sup>11</sup>Department of Oncology, Turku University Hospital, Turku, Finland  
+<sup>12</sup>InFLAMES Research Flagship Center, University of Turku, Turku, Finland  
+<sup>13</sup>Department of Life Technologies, University of Turku, Turku, Finland  
+<sup>14</sup>Foundation for the Finnish Cancer Institute, Helsinki, Finland  
+<sup>15</sup>Western Finnish Cancer Center, University of Turku, Turku FI-20520, Finland    
 
-<sup>3</sup>INSERM UMR-S1310, Université Paris-Saclay, Hôpital Paul Brousse, Villejuif F-94805, France
-
-<sup>4</sup>INSERM-U932, Immunity and Cancer, Institut Curie, Paris-Cité University, Paris, France
-
-<sup>5</sup>INSERM-U932, Immunity and Cancer, Institut Curie, PSL University, Paris, France
-
-<sup>6</sup>Turku BioImaging, Åbo Akademi University and University of Turku, Turku, Finland
-
-<sup>7</sup>Department of Diagnostics and Public Health, University of Verona, Verona 37134, Italy
-
-<sup>8</sup>Medical Biology and Pathology Department, Pathology Laboratory, Gustave Roussy Cancer Campus, Villejuif, France
-
-<sup>9</sup>Platform for Experimental and Translational Pathology (PETRA), Gustave Roussy Cancer Campus, Villejuif, France
-
-<sup>10</sup>Institute of Biomedicine, and MediCity Research Laboratory, University of Turku, Turku, Finland
-
-<sup>11</sup>Department of Oncology, Turku University Hospital, Turku, Finland
-
-<sup>12</sup>InFLAMES Research Flagship Center, University of Turku, Turku, Finland
-
-<sup>13</sup>Department of Life Technologies, University of Turku, Turku, Finland
-
-<sup>14</sup>Foundation for the Finnish Cancer Institute, Helsinki, Finland
-
-<sup>15</sup>Western Finnish Cancer Center, University of Turku, Turku FI-20520, Finland
-
-<sup>#</sup>Equal contribution
-
-<sup>§</sup>Equal contribution
-
-<sup>ꟸ </sup>Equal contribution
-
-<sup>*</sup>Correspondence: johanna.ivaska@utu.fi and fanny.jaulin@gustaveroussy.fr
-
+<sup>#</sup>Equal contribution  
+<sup>§</sup>Equal contribution  
+<sup>ꟸ </sup>Equal contribution  
+<sup>*</sup>Correspondence: johanna.ivaska@utu.fi and fanny.jaulin@gustaveroussy.fr  
 <sup>**</sup>Current address: Cell Polarity, Migration and Cancer Unit, Institut Pasteur, CNRS UMR3691, Université Paris
 Cité, Équipe Labellisée Ligue Contre le Cancer, F-75015, Paris, France  
