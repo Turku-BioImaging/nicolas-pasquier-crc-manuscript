@@ -8,12 +8,18 @@ version: "1.0.0"
 authors:
   - family-names: Pasquier
     given-names: Nicolas
-  - family-names: Isomorsu
+  - family-names: Pelkonen
+    given-names: Meri
+  - family-names: Carraz-Billat
+    given-names: Elise
+  - family-names: Isomursu
     given-names: Aleksi
-  - family-names: Mathieu
-    given-names: Jacques RR
+  - family-names: Merand
+    given-names: Raphaël
   - family-names: Hamidi
     given-names: Hellyeh
+  - family-names: Mathieu
+    given-names: Jacques R.R.
   - family-names: Härkönen
     given-names: Jouni
   - family-names: Follain
@@ -30,6 +36,18 @@ authors:
     given-names: Pasi
   - family-names: Barresi
     given-names: Valeria
+  - family-names: Bani
+    given-names: Mohammed-Amine
+  - family-names: Protin
+    given-names: Johanna
+  - family-names: Cartry
+    given-names: Jérôme
+  - family-names: Bedja
+    given-names: Sabrina
+  - family-names: Elenius
+    given-names: Klaus
+  - family-names: Peglion
+    given-names: Florent
   - family-names: Jaulin
     given-names: Fanny
   - family-names: Ivaska
