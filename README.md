@@ -14,10 +14,10 @@ Mucinous colorectal carcinoma (MUC CRC) dissemination into the tumor stroma and 
 ## Image processing workflow
 This repository contains the image processing code used in the manuscript. Download the required image data and metadata (see Image data section).
 
-- Clone this repository
-- Configure a Python environment using `environment.yml`
-- Run `./util/convert_to_zarr.py` to generate a Zarr dataset of all the input images.
-- Run `./main.py`
+- [ ] Clone this repository
+- [ ] Configure a Python environment using `environment.yml`
+- [ ] Run `./util/convert_to_zarr.py` to generate a Zarr dataset of all the input images.
+- [ ] Run `./main.py`
 
 ## Organizational affiliations
 <sup>1</sup>Turku Bioscience Centre, University of Turku and Åbo Akademi University, Turku, Finland  
